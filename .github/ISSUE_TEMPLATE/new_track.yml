@@ -1,0 +1,37 @@
+name: New track
+description: Propose a field the skill should know (marketing, finance, sales, ...)
+labels: ["track"]
+body:
+  - type: markdown
+    attributes:
+      value: "A track teaches the skill a field's keywords, the proof recruiters want, and what interviews test. See references/tracks/ for the two that exist."
+  - type: input
+    id: field
+    attributes:
+      label: Field
+      placeholder: e.g. Performance marketing
+    validations:
+      required: true
+  - type: textarea
+    id: roles
+    attributes:
+      label: Job titles it should cover
+      placeholder: e.g. Growth marketer, Performance marketing manager, Paid media specialist
+    validations:
+      required: true
+  - type: textarea
+    id: keywords
+    attributes:
+      label: Keywords recruiters look for
+  - type: textarea
+    id: interviews
+    attributes:
+      label: What interviews in this field test
+      description: Metrics, case questions, tools, common traps.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help?
+      options:
+        - label: I work in this field and can review the track file.
+        - label: I can write the track file myself.

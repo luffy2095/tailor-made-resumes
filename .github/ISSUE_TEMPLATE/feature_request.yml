@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest something the skill should do
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not paste your real resume, fact file or personal details here."
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - Interview cheat sheet
+        - Human resume
+        - ATS resume
+        - Intake questions
+        - Updating my profile
+        - Setup and install
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem do you have?
+      description: Describe what you were trying to do and what got in the way.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do today instead?
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help?
+      options:
+        - label: I can open a pull request for this.

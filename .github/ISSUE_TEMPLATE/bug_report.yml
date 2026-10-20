@@ -1,0 +1,48 @@
+name: Bug report or test report
+description: Something broke, or tell us how setup went on your system
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not paste your real resume, fact file or personal details. Remove names and contact details from any log."
+  - type: dropdown
+    id: step
+    attributes:
+      label: Which step?
+      options:
+        - Setup (installing LaTeX)
+        - Intake questions
+        - Fact file
+        - Building a cheat sheet
+        - Building a resume
+        - Updating my profile
+        - Just reporting that setup worked
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+    validations:
+      required: true
+  - type: input
+    id: osversion
+    attributes:
+      label: OS version and Python version
+      placeholder: e.g. Ubuntu 24.04, Python 3.12
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log output
+      description: The last 30 lines of setup.log or the build output.
+      render: text
