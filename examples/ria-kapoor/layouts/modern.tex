@@ -1,0 +1,44 @@
+% Layout preview: modern. Ria Kapoor (fictional).
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.7in,right=0.7in]{geometry}
+\usepackage{tailor}\setaccent{slate}
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\titleformat{\section}{\color{accent}\bfseries\large}{}{0pt}{}
+\titlespacing{\section}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=1pt,parsep=0pt,label=\textcolor{accent}{\textbullet}}
+\newcommand{\role}[3]{\par\vspace{4pt}\textbf{#1} \textcolor{greytext}{\textbar\ #2} \hfill \textcolor{greytext}{#3}\par\vspace{1pt}}
+\begin{document}
+{\Huge\bfseries\color{accent}Ria Kapoor}\par\vspace{2pt}
+{\color{accent}\rule{\linewidth}{1.5pt}}\par\vspace{3pt}
+{\color{greytext}Backend Engineer \textbar\ Bengaluru \textbar\ +91 90000 00000 \textbar\ \href{mailto:ria.kapoor@example.com}{ria.kapoor@example.com} \textbar\ \href{https://example.com/ria}{example.com/ria}}\par
+
+\section{Summary}
+Backend engineer with five years on high-volume order systems. I make retries safe, keep money and records reconciled, and lead calmly when production breaks. Looking for a senior role where correctness of every rupee is the job.
+
+\section{Experience}
+\role{Backend Engineer II}{Tiffinly, Bengaluru}{Jul 2023 -- Present}
+\begin{itemize}
+  \item Own the order-dispatch service that assigns riders to orders in 14 cities, built on Python, PostgreSQL, Redis and Kafka on AWS.
+  \item Ended duplicate rider assignments during network timeouts by adding idempotency keys under a unique constraint to every assignment retry.
+  \item Built the nightly reconciliation of rider payouts against the payouts ledger; every mismatch opens a ticket with the rider and the amount.
+  \item Led the incident response for the Diwali-eve dispatch backlog, then wrote the postmortem and the Kafka consumer backpressure fix.
+  \item Cut p99 latency of the assignment API from 900 ms to 240 ms by moving rider lookups to a Redis geo index.
+\end{itemize}
+\role{Backend Engineer I}{Tiffinly, Bengaluru}{Jul 2021 -- Jun 2023}
+\begin{itemize}
+  \item Built the refund flow for cancelled orders, including partial refunds when only some items were cancelled.
+  \item Joined the on-call rotation in month six and wrote four of the team's runbooks.
+\end{itemize}
+
+\section{Skills}
+\textbf{Languages:} Python, SQL\\
+\textbf{Data:} PostgreSQL, Redis, Kafka\\
+\textbf{Cloud and operations:} AWS (ECS, RDS, SQS), Docker, Grafana, PagerDuty
+
+\section{Education}
+\textbf{B.Tech, Computer Science}, Example Institute of Technology \hfill 2021
+
+\section{Professional Development}
+Go \textbar\ Payment systems \textbar\ Double-entry ledger design
+\end{document}

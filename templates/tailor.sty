@@ -1,0 +1,41 @@
+% Shared macros for every tailor-made-resumes document. Load after the font package, before \begin{document}.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tailor}[2026/10/20 tailor-made-resumes shared macros]
+\RequirePackage[T1]{fontenc}
+% copy-paste and parsers get real letters, not glyph codes
+\input{glyphtounicode}\pdfgentounicode=1
+\RequirePackage{xcolor}
+\RequirePackage{enumitem}
+\RequirePackage{titlesec}
+
+% ---- accent presets: \setaccent{navy|forest|wine|slate} (default navy) ----
+\definecolor{navy}{HTML}{1A1F62}
+\definecolor{forest}{HTML}{1F4D3A}
+\definecolor{wine}{HTML}{6B1F2E}
+\definecolor{slate}{HTML}{2F3E4E}
+\colorlet{accent}{navy}
+\newcommand{\setaccent}[1]{\colorlet{accent}{#1}}
+\definecolor{greytext}{HTML}{4A4A4A}
+
+% ---- placeholder: grey italic so an unfilled slot is obvious in a preview ----
+\newcommand{\ph}[1]{\textcolor{black!45}{\itshape #1}}
+
+% ---- cheat sheet tags: three colours, three meanings ----
+\definecolor{know}{HTML}{1E7A3C}    % already does this under another name
+\definecolor{learn}{HTML}{C96A00}   % genuinely new; the sheet teaches it
+\definecolor{trap}{HTML}{A63232}    % the gotcha interviewers use to sort candidates
+\newcommand{\K}{\textcolor{know}{\textbf{[KNOW]}} }
+\newcommand{\LRN}{\textcolor{learn}{\textbf{[LEARN]}} }
+\newcommand{\trapbox}[1]{\par\vspace{2pt}{\textcolor{trap}{\textbf{TRAP:}} #1}\par}
+\newcommand{\scenario}[1]{\par\vspace{2pt}{\itshape\textcolor{black!70}{#1}}\par}
+\newcommand{\code}[1]{\par\vspace{1pt}{\small\texttt{#1}}\par\vspace{1pt}}
+\newcommand{\Q}[1]{\par\vspace{4pt}\textbf{\textcolor{accent}{Q: #1}}\par}
+\newcommand{\A}{\textbf{A:} }
+
+% ---- cheat sheet page style: call \sheetsections in the preamble ----
+\newcommand{\sheetsections}{%
+  \titleformat{\section}{\large\bfseries\color{accent}}{}{0pt}{}[\vspace{-2pt}\rule{\linewidth}{0.8pt}]
+  \titlespacing{\section}{0pt}{8pt}{3pt}
+  \setlist[itemize]{leftmargin=1.2em,itemsep=1.5pt,topsep=2pt,parsep=0pt}}
+
+\RequirePackage[hidelinks,colorlinks=true,urlcolor=accent,linkcolor=accent]{hyperref}

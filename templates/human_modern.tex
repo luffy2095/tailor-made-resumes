@@ -1,0 +1,40 @@
+% Human resume, one-column modern: Carlito sans, name in accent with a thin rule, flush-left headings. Pairs visually with the ATS version.
+% Target: exactly 1 page. \setaccent{navy|forest|wine|slate} to change the accent.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.7in,right=0.7in]{geometry}
+\usepackage{tailor}\setaccent{slate}
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\titleformat{\section}{\color{accent}\bfseries\large}{}{0pt}{}
+\titlespacing{\section}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=1pt,parsep=0pt,label=\textcolor{accent}{\textbullet}}
+\newcommand{\role}[3]{\par\vspace{4pt}\textbf{#1} \textcolor{greytext}{\textbar\ #2} \hfill \textcolor{greytext}{#3}\par\vspace{1pt}}
+\begin{document}
+{\Huge\bfseries\color{accent}\ph{Full Name}}\par\vspace{2pt}
+{\color{accent}\rule{\linewidth}{1.5pt}}\par\vspace{3pt}
+{\color{greytext}\ph{Role family} \textbar\ \ph{City} \textbar\ \ph{phone} \textbar\ \href{mailto:PH-email}{\ph{email}} \textbar\ \href{https://PH-site}{\ph{site}}}\par
+
+\section{Summary}
+\ph{Three lines written for a human reader.}
+
+\section{Experience}
+\role{\ph{Title}}{\ph{Company}}{\ph{Mon YYYY} -- Present}
+\begin{itemize}
+  \item \ph{Outcome first, then how.}
+  \item \ph{Bullet.}
+\end{itemize}
+\role{\ph{Title}}{\ph{Company}}{\ph{Mon YYYY} -- \ph{Mon YYYY}}
+\begin{itemize}
+  \item \ph{Bullet.}
+\end{itemize}
+
+\section{Skills}
+\textbf{\ph{Group}:} \ph{item, item, item}\\
+\textbf{\ph{Group}:} \ph{item, item}
+
+\section{Education}
+\textbf{\ph{Degree}}, \ph{Institution} \hfill \ph{YYYY}
+
+\section{Professional Development}
+\ph{Skill} \textbar\ \ph{Skill} \textbar\ \ph{Skill}
+\end{document}

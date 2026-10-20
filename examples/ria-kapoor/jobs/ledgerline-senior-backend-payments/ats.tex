@@ -1,0 +1,45 @@
+% ATS resume. Ria Kapoor (fictional) for Ledgerline, Senior Backend Engineer, Payments.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.5in,bottom=0.5in,left=0.7in,right=0.7in]{geometry}
+\usepackage{tailor}
+\usepackage{microtype}\DisableLigatures{encoding = *, family = *}   % ATS keyword matching: fi/ff/ffi stay separate letters
+\pagestyle{empty}
+\hyphenpenalty=10000 \exhyphenpenalty=10000
+\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{1pt}
+\titleformat{\section}{\large\bfseries}{}{0pt}{\MakeUppercase}[\titlerule]
+\titlespacing{\section}{0pt}{4pt}{2pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0pt,topsep=1pt,parsep=0pt,label=\textbullet}
+\newcommand{\role}[3]{\textbf{#1}\par #2 \hfill #3\par}
+\begin{document}
+{\LARGE\bfseries Ria Kapoor}\par
+Bengaluru, India \textbar\ +91 90000 00000 \textbar\ \href{mailto:ria.kapoor@example.com}{ria.kapoor@example.com} \textbar\ \href{https://example.com/ria}{example.com/ria}\par
+
+\section{Professional Summary}
+Backend Engineer with 5 years building distributed systems in production: idempotent APIs, reconciliation, Kafka event streaming and PostgreSQL. Experienced in on-call ownership and incident response. Seeking a Senior Backend Engineer role in payments.
+
+\section{Core Competencies}
+Distributed Systems \textbullet\ Idempotency \textbullet\ Reconciliation \textbullet\ Ledger \textbullet\ Event Streaming \textbullet\ Incident Response \textbullet\ On-call \textbullet\ API Design \textbullet\ Performance Tuning\\
+\textbf{Systems:} Python \textbullet\ PostgreSQL \textbullet\ Kafka \textbullet\ Redis \textbullet\ AWS (ECS, RDS, SQS) \textbullet\ Docker \textbullet\ Grafana \textbullet\ PagerDuty
+
+\section{Professional Experience}
+\role{Backend Engineer II}{Tiffinly, Bengaluru}{Jul 2023 -- Present}
+\begin{itemize}
+  \item Own the order-dispatch service assigning riders to orders in 14 cities (Python, PostgreSQL, Redis, Kafka, AWS).
+  \item Implemented idempotency keys with a unique constraint on assignment retries, ending duplicate assignments during network timeouts.
+  \item Built nightly reconciliation of rider payouts against the payouts ledger, with a ticket for every mismatch.
+  \item Led incident response for the Diwali-eve dispatch backlog; wrote the postmortem and the Kafka consumer backpressure fix.
+  \item Reduced p99 latency of the assignment API from 900 ms to 240 ms using a Redis geo index.
+\end{itemize}
+\role{Backend Engineer I}{Tiffinly, Bengaluru}{Jul 2021 -- Jun 2023}
+\begin{itemize}
+  \item Built the refund flow for cancelled orders, including partial refunds.
+  \item Served on the on-call rotation from month six; authored four runbooks.
+\end{itemize}
+
+\section{Education}
+\textbf{B.Tech, Computer Science}, Example Institute of Technology \hfill 2021
+
+\section{Professional Development}
+Go \textbullet\ Payment Systems \textbullet\ Double-Entry Ledger Design
+\end{document}

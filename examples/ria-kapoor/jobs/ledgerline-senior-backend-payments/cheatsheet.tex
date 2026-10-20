@@ -1,0 +1,93 @@
+% Per-job interview cheat sheet: Ledgerline, Senior Backend Engineer, Payments. Fictional example.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.65in,right=0.65in]{geometry}
+\usepackage{tailor}\sheetsections
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+\begin{document}
+\begin{center}{\LARGE\bfseries Ledgerline — Senior Backend Engineer, Payments}\\[2pt]
+Read top to bottom once the night before. In the waiting room read only the TRAPs and the FAQs.\end{center}
+
+\section{What this job actually is}
+\scenario{You own the services that move a customer's money from ``tap to pay'' to ``restaurant got paid''. Every bug is either a customer charged twice or a merchant paid wrong. You answer to the payments platform lead.}
+\begin{itemize}
+  \item \K Retries that must not double-act. You built this for rider assignment; here it is a charge.
+  \item \K Reconciliation. Your rider-payout job is the same three-bucket match they run against the payment provider every night.
+  \item \LRN The payment lifecycle: authorization, capture, settlement, refund, chargeback.
+  \item \LRN Double-entry ledgers. Topic sheet \texttt{cheatsheet\_ledgers}.
+\end{itemize}
+
+\section{The core metrics, through one working day}
+\scenario{9:00. The dashboard shows yesterday. All numbers here are invented for practice.}
+\begin{itemize}
+  \item \textbf{Authorization rate} = approved / attempted. 182,400 of 192,000 = 95.0\%. A drop by one bank points at that bank, a drop everywhere points at you.
+  \item \textbf{Timeout rate}: 0.4\% of 200,000 daily payments = 800 calls where you do not know the outcome. This is the number that creates double charges.
+  \item \textbf{Reconciliation breaks}: the provider's file has 48,210 lines, your ledger 48,207. Three breaks, each one a ticket with an age.
+\end{itemize}
+\trapbox{``Success rate'' is ambiguous. Ask: authorized, captured, or settled? A payment can be authorized and never captured.}
+
+\section{The rituals of the role}
+\begin{itemize}
+  \item \textbf{Daily reconciliation review}: open breaks by age. Anything older than two days is escalated. \K Same as your payout job.
+  \item \textbf{Weekly incident review}: blameless postmortems, action items with owners. \K Your Diwali-eve postmortem.
+  \item \textbf{Provider status watch}: a provider degrades, traffic routes to the backup. \LRN Ask how they decide the switch.
+\end{itemize}
+
+\section{One worked story: the double charge}
+\scenario{``A customer says they were charged twice. Walk me through how that happens and how you stop it.''}
+The client waits 3 s. The provider's p99 is 4.2 s. So 800 calls a day time out. If half of those actually succeeded at the provider, a blind retry charges 400 customers twice: at an average of Rs.\,450 that is Rs.\,1,80,000 a day in refunds, plus the support tickets.
+\begin{itemize}
+  \item \textbf{Option A, raise the timeout to 6 s}: fewer timeouts, slower checkout, and a dropped connection still double-charges. Treats the symptom.
+  \item \textbf{Option B, idempotency key}: the client sends one key per payment intent. The server stores it under a unique constraint and returns the stored result on any retry. Fixes the cause.
+\end{itemize}
+Choose B, and keep A's timeout honest. Afterwards watch duplicate refunds per day; it should go to zero. \K This is your rider-assignment fix with money attached. Say so.
+
+\section{The daily heartbeat}
+\begin{itemize}
+  \item \K Kafka consumer lag on the payment-events topic. Your backlog story applies directly.
+  \item \K PostgreSQL slow queries on the ledger tables.
+  \item \LRN Pending intents: payments sent to the provider with no final answer. A sweeper asks the provider by your reference and settles each one.
+\end{itemize}
+
+\section{Ledgerline vocabulary: recognise, don't claim \LRN}
+\begin{itemize}
+  \item \textbf{Authorization / capture}: the bank holds the money, then you take it. Food orders often capture on delivery.
+  \item \textbf{Settlement}: the provider pays out, minus its fee (MDR, merchant discount rate).
+  \item \textbf{Chargeback}: the customer disputes with their bank; money is pulled back and you must respond with evidence.
+  \item \textbf{PSP}: payment service provider, the company between you and the banks.
+  \item \textbf{PCI-DSS}: the card data security standard. Say ``aware of the scope, have not been audited''. Never claim more.
+\end{itemize}
+
+\section{Interview FAQs, reasoning shown}
+\Q{Design an idempotent payment endpoint.}
+\A The client sends an \texttt{Idempotency-Key}. In one transaction I insert the key row, under a unique constraint, together with the payment intent. A retry hits the constraint and gets the stored response; if the first call is still running it gets 409 and retries later. Keys expire after 24 hours. The unique constraint matters because check-then-insert has a race between two concurrent retries.
+\trapbox{``The provider call succeeded but your database write after it failed. Now what?'' Record the intent as pending \emph{before} calling the provider, then let a sweeper ask the provider by your reference. Never call first and record after.}
+\Q{Why store money as integers?}
+\A In paise, the minor unit. Floats cannot represent 0.1 exactly, so sums drift by a paisa and reconciliation never balances.
+\Q{How would you reconcile with the provider?}
+\A Match their settlement file to our ledger by provider reference into three buckets: matched, ours only, theirs only. Amount mismatches inside ``matched'' are their own bucket. Each break becomes a ticket with an age. \K I run this today for rider payouts.
+\Q{Tell me about an incident you led.}
+\A The Diwali-eve backlog. Consumer lag reached 40 minutes. I added backpressure and a priority lane for orders already paid, then wrote the postmortem. Lead with what you decided, not what broke.
+
+\section{Drills: cold, out loud, before you leave home}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+  \item Draw a payment from tap to settlement. Mark every place a timeout can leave you not knowing the outcome. (Client to you, you to the provider, the provider to the bank, the settlement file arriving late.)
+  \item Explain an idempotency key in two sentences without saying ``idempotent''. (One key per intent. A second request with the same key gets the first answer, never a second action.)
+  \item The provider has 48,210 lines and your ledger 48,207. Name the first three checks. (Which side has the extras. The day cutoff, IST against UTC. Refunds posted as separate lines on one side only.)
+  \item Post a Rs.\,500 order with Rs.\,50 commission as ledger entries. (Topic sheet, level 1.)
+\end{enumerate}
+
+\section{Questions to ask them}
+\begin{itemize}
+  \item How do you decide to fail over to the backup provider, and who makes that call at 2 a.m.?
+  \item What is the oldest open reconciliation break today, and what is stopping it from closing?
+  \item Where does Go stop and other languages start in the payments stack?
+\end{itemize}
+
+\section{Read next}
+\begin{itemize}
+  \item \href{https://stripe.com/blog/idempotency}{Stripe: designing robust APIs with idempotency}: the client side of the key, 15 minutes.
+  \item \href{https://brandur.org/idempotency-keys}{Brandur: implementing idempotency keys in Postgres}: the server side, with recovery points, 30 minutes.
+  \item \href{https://www.moderntreasury.com/journal/accounting-for-developers-part-i}{Modern Treasury: accounting for developers}: why every movement has two sides, 20 minutes.
+\end{itemize}
+\end{document}

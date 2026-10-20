@@ -1,0 +1,41 @@
+% Human resume, one-column classic: XCharter serif, small-caps headings, hairline rules. Default for engineering and finance tracks.
+% Target: exactly 1 page. \setaccent{navy|forest|wine|slate} to change the accent.
+\documentclass[10.5pt,a4paper]{article}
+\usepackage[sups]{XCharter}
+\usepackage[top=0.6in,bottom=0.6in,left=0.7in,right=0.7in]{geometry}
+\usepackage{tailor}\setaccent{navy}
+\usepackage{microtype}\hyphenpenalty=5000   % fewer broken words in justified text
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\titleformat{\section}{\color{accent}\scshape\large}{}{0pt}{}[\vspace{-6pt}{\color{accent}\rule{\linewidth}{0.4pt}}]
+\titlespacing{\section}{0pt}{9pt}{4pt}
+\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=1pt,parsep=0pt,label=\textcolor{accent}{\textbullet}}
+\newcommand{\role}[3]{\par\vspace{4pt}\textbf{#1}, #2 \hfill {\itshape #3}\par\vspace{1pt}}
+\begin{document}
+\begin{center}
+{\Huge\scshape \ph{Full Name}}\\[3pt]
+{\color{greytext}\ph{Role family} \textperiodcentered\ \ph{City} \textperiodcentered\ \ph{phone} \textperiodcentered\ \href{mailto:PH-email}{\ph{email}} \textperiodcentered\ \href{https://PH-site}{\ph{site}}}
+\end{center}
+
+\section{Summary}
+\ph{Three lines written for a human reader: who you are, what you are known for, what you want next.}
+
+\section{Experience}
+\role{\ph{Title}}{\ph{Company}}{\ph{Mon YYYY} -- Present}
+\begin{itemize}
+  \item \ph{Outcome first, then how. One line each where possible.}
+  \item \ph{Bullet.}
+\end{itemize}
+\role{\ph{Title}}{\ph{Company}}{\ph{Mon YYYY} -- \ph{Mon YYYY}}
+\begin{itemize}
+  \item \ph{Bullet.}
+\end{itemize}
+
+\section{Skills}
+\textbf{\ph{Group}:} \ph{item, item, item} \quad \textbf{\ph{Group}:} \ph{item, item}
+
+\section{Education}
+\textbf{\ph{Degree}}, \ph{Institution} \hfill \ph{YYYY}
+
+\section{Professional Development}
+\ph{Skill} \textperiodcentered\ \ph{Skill} \textperiodcentered\ \ph{Skill}
+\end{document}

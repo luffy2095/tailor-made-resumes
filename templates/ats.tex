@@ -1,0 +1,44 @@
+% ATS resume. One fixed layout on purpose: single column, no graphics, standard headings, no hyphenation.
+% Target: exactly 1 page (python3 scripts/build.py <file> --pages 1). Reduce to 9.5pt before cutting content.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.5in,bottom=0.5in,left=0.7in,right=0.7in]{geometry}
+\usepackage{tailor}
+\usepackage{microtype}\DisableLigatures{encoding = *, family = *}   % ATS keyword matching: fi/ff/ffi stay separate letters
+\pagestyle{empty}
+\hyphenpenalty=10000 \exhyphenpenalty=10000   % keywords stay whole for the parser
+\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{1pt}
+\titleformat{\section}{\large\bfseries}{}{0pt}{\MakeUppercase}[\titlerule]
+\titlespacing{\section}{0pt}{4pt}{2pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0pt,topsep=1pt,parsep=0pt,label=\textbullet}
+\newcommand{\role}[3]{\textbf{#1}\par #2 \hfill #3\par}   % \role{title}{company, city}{dates}
+\begin{document}
+{\LARGE\bfseries \ph{FULL NAME}}\par
+\ph{City, Country} \textbar\ \ph{phone} \textbar\ \href{mailto:PH-email}{\ph{email}} \textbar\ \href{https://PH-linkedin-url}{\ph{linkedin url}}\par
+
+\section{Professional Summary}
+\ph{Three lines. Role family, years, the two or three things the JD asks for most, in the JD's words.}
+
+\section{Core Competencies}
+\ph{Keyword} \textbullet\ \ph{Keyword} \textbullet\ \ph{Keyword} \textbullet\ \ph{Keyword} \textbullet\ \ph{Keyword} \textbullet\ \ph{Keyword}\\
+\textbf{Systems:} \ph{Tool} \textbullet\ \ph{Tool} \textbullet\ \ph{Tool}
+
+\section{Professional Experience}
+\role{\ph{Title}}{\ph{Company}, \ph{City}}{\ph{Mon YYYY} -- Present}
+\begin{itemize}
+  \item \ph{Outcome-first bullet using a JD keyword. Qualitative if numbers are confidential.}
+  \item \ph{Bullet.}
+\end{itemize}
+\role{\ph{Title}}{\ph{Company}, \ph{City}}{\ph{Mon YYYY} -- \ph{Mon YYYY}}
+\begin{itemize}
+  \item \ph{Bullet.}
+\end{itemize}
+
+\section{Education}
+\textbf{\ph{Degree}}, \ph{Institution}, \ph{City} \hfill \ph{YYYY}
+
+\section{Professional Development}
+\ph{Skill being learned} \textbullet\ \ph{Skill} \textbullet\ \ph{Skill}   % skills only, never certification names not yet held
+
+% \section{Certifications}   % only when actually held, with the issuing body
+\end{document}

@@ -1,0 +1,47 @@
+% Topic cheat sheet: one skill gap, reused across jobs. Levelled basic to interview-winning, every example in the candidate's own domain.
+% Target: exactly 2 pages (python3 scripts/build.py <file> --pages 2 --png).
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.65in,right=0.65in]{geometry}
+\usepackage{tailor}\sheetsections
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+\begin{document}
+\begin{center}{\LARGE\bfseries \ph{TOPIC} for \ph{CANDIDATE'S ROLE FAMILY}}\\[2pt]
+Every example uses \ph{the candidate's domain} data you already understand. Read top to bottom once, then use as lookup.\end{center}
+
+\section{The one model everything runs on}
+\scenario{\ph{The schema, system, or mental model to hold for the whole sheet.}}
+\code{\ph{the model in code or notation}}
+
+\section{Level 1 — \ph{basic skill} }
+\scenario{``\ph{Question an interviewer asks at this level.}''}
+\code{\ph{worked answer}}
+\ph{One sentence on why it works.}
+
+\section{Level 2 — \ph{next skill}}
+\scenario{``\ph{Question.}''}
+\code{\ph{worked answer}}
+\trapbox{\ph{The mistake most candidates make here.}}
+
+\section{Level 3 — \ph{where interviews are won}}
+\scenario{``\ph{Question.}''}
+\code{\ph{worked answer}}
+\begin{itemize}
+  \item \textbf{\ph{Variant}}: \ph{one line.}
+\end{itemize}
+
+\section{Gotchas people in \ph{domain} get burned by}
+\begin{itemize}
+  \item \textbf{\ph{Gotcha}}: \ph{one line.}
+\end{itemize}
+
+\section{5 drills — do cold before any interview}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+  \item \ph{Drill with the expected answer in brackets.}
+\end{enumerate}
+
+\section{Read next / practice}
+\begin{itemize}
+  \item \href{https://example.com}{\ph{Resource}}: \ph{what to take from it.}
+\end{itemize}
+\end{document}

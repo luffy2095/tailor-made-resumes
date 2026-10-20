@@ -1,0 +1,70 @@
+% Topic cheat sheet: double-entry ledgers, for a backend engineer from food delivery. Fictional example. Reusable for any payments job.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.65in,right=0.65in]{geometry}
+\usepackage{tailor}\sheetsections
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+\begin{document}
+\begin{center}{\LARGE\bfseries Double-Entry Ledgers for Backend Engineers}\\[2pt]
+Every example uses orders, refunds and restaurant payouts you already understand. Read top to bottom once, then use as lookup.\end{center}
+
+\section{The two tables everything runs on}
+\scenario{Hold this schema for the whole sheet. Interviews give you something shaped like it.}
+\code{accounts(account\_id, name, kind)}
+\code{entries(txn\_id, account\_id, direction, amount\_minor, currency, created\_at)}
+One money movement = one \texttt{txn\_id} with two or more entries. \texttt{direction} is 'debit' or 'credit'. \texttt{amount\_minor} is in paise, always positive, always an integer. The one rule: in every transaction, debits equal credits.
+
+\section{Level 1 — an order is paid}
+\scenario{``A customer pays Rs.\,500. The restaurant gets Rs.\,450 and we keep Rs.\,50 commission. Post it.''}
+\code{Dr PSP clearing \hspace*{3.2em} 500\\ \hspace*{1.2em}Cr Restaurant payable \hspace*{0.9em} 450\\ \hspace*{1.2em}Cr Commission revenue \hspace*{0.6em} 50}
+500 = 450 + 50, so it balances. \textbf{PSP clearing} holds money the provider owes us until it settles. \textbf{Restaurant payable} is money we owe the restaurant. You already have both ideas in your payout job, just not the names.
+
+\section{Level 2 — a full refund}
+\scenario{``The order is cancelled. Refund it.''}
+\code{Dr Restaurant payable \hspace*{0.9em} 450\\ Dr Commission revenue \hspace*{0.6em} 50\\ \hspace*{1.2em}Cr PSP clearing \hspace*{3.2em} 500}
+A refund is a new transaction that mirrors the old one. The original entries stay exactly as they were.
+\trapbox{Never \texttt{UPDATE} or \texttt{DELETE} an entry. ``Just fix the row'' destroys the audit trail, and an auditor or interviewer will stop you there. Corrections are always new entries.}
+
+\section{Level 3 — balances are a query, not a column}
+\scenario{``What do we owe each restaurant right now?''}
+\code{SELECT account\_id,\\ \hspace*{1em}SUM(CASE WHEN direction = 'credit' THEN amount\_minor ELSE -amount\_minor END) AS owed\_minor\\ FROM entries\\ WHERE account\_id IN (SELECT account\_id FROM accounts WHERE kind = 'restaurant\_payable')\\ GROUP BY account\_id;}
+Liability accounts like payables grow with credits. Asset accounts like PSP clearing grow with debits. Say which sign convention you use before you write the query.
+\begin{itemize}
+  \item A cached \texttt{balance} column is fine for speed, but it must be updated in the same transaction as the entries. The entries are the truth.
+\end{itemize}
+
+\section{Level 4 — posting exactly once}
+\scenario{``The posting job crashed halfway and restarted. How do you avoid posting the order twice?''}
+\code{transactions(txn\_id, external\_ref UNIQUE, posted\_at)}
+Insert the transaction row and all its entries in one database transaction. \texttt{external\_ref} is the order ID plus the event, for example \texttt{order\_8812:paid}. A replay hits the unique constraint and becomes a no-op. \K This is your rider-assignment idempotency key.
+\trapbox{Checking ``does a row exist?'' and then inserting has a race between two workers. Only the unique constraint is safe.}
+
+\section{Level 5 — settlement day}
+\scenario{``The provider pays out Rs.\,49,000 against Rs.\,50,000 of orders. Post it.''}
+\code{Dr Bank \hspace*{6.1em} 49,000\\ Dr Payment fees \hspace*{3.3em} 1,000\\ \hspace*{1.2em}Cr PSP clearing \hspace*{2.6em} 50,000}
+The Rs.\,1,000 is the provider's 2\% fee (MDR, merchant discount rate). After this, PSP clearing for those orders is zero. A non-zero leftover is a reconciliation break.
+
+\section{Gotchas engineers get burned by}
+\begin{itemize}
+  \item \textbf{Floats}: Rs.\,0.10 cannot be stored exactly in a float. Use integer paise, or \texttt{NUMERIC} in PostgreSQL.
+  \item \textbf{Splitting}: Rs.\,100 split three ways is 3,334 + 3,333 + 3,333 paise. Decide who gets the extra paisa, and write the rule down.
+  \item \textbf{Day cutoff}: the provider's ``day'' may end at midnight UTC, yours at midnight IST. Many breaks are just that.
+  \item \textbf{Currency}: never sum amounts across currencies. Every entry carries its currency.
+\end{itemize}
+
+\section{5 drills — do cold before any interview}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+  \item Customer pays Rs.\,800, commission 15\%. Post it. (Dr PSP clearing 800; Cr Restaurant payable 680; Cr Commission revenue 120.)
+  \item That order gets a Rs.\,200 partial refund, and the restaurant bears all of it. Post it. (Dr Restaurant payable 200; Cr PSP clearing 200.)
+  \item Write the SQL that finds unbalanced transactions. (\texttt{GROUP BY txn\_id HAVING SUM(signed amount) <> 0}.)
+  \item Why not keep only a balance column? (No history, no audit, no way to find which event broke it.)
+  \item A posting worker crashes after writing two of three entries. What did you do wrong? (The entries were not in one database transaction.)
+\end{enumerate}
+
+\section{Read next / practice}
+\begin{itemize}
+  \item \href{https://www.moderntreasury.com/journal/accounting-for-developers-part-i}{Modern Treasury: accounting for developers}: debits, credits and normal balances, 20 minutes.
+  \item \href{https://developer.squareup.com/blog/books-an-immutable-double-entry-accounting-database-service/}{Square: Books, an immutable double-entry database}: how a real company built it, 25 minutes.
+  \item Practice: build the two tables in PostgreSQL, post drills 1 and 2, then run the drill 3 query. One evening.
+\end{itemize}
+\end{document}

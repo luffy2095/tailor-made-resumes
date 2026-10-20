@@ -1,0 +1,66 @@
+% Per-job interview cheat sheet. Fill every \ph{BRACKET} from the gap map and the dossier.
+% Target: exactly 2 pages (python3 scripts/build.py <file> --pages 2 --png). Phone-readable: 10pt, no tables wider than the column.
+\documentclass[10pt,a4paper]{article}
+\usepackage{carlito}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.55in,bottom=0.55in,left=0.65in,right=0.65in]{geometry}
+\usepackage{tailor}\sheetsections
+\pagestyle{empty}\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+\begin{document}
+\begin{center}{\LARGE\bfseries \ph{COMPANY} — \ph{ROLE}}\\[2pt]
+Read top to bottom once the night before. In the waiting room read only the TRAPs and the FAQs.\end{center}
+
+\section{What this job actually is}
+\scenario{\ph{Two sentences: what the person in this seat does on a Tuesday, and who they answer to.}}
+\begin{itemize}
+  \item \K \ph{A thing the candidate already does, named in the employer's words.}
+  \item \LRN \ph{A thing the JD wants that the candidate has not done.}
+\end{itemize}
+
+\section{The core metrics, through one working day}
+\scenario{\ph{One concrete morning at the candidate's own workplace. Walk the numbers through it.}}
+\ph{Metric} = \ph{formula}. \ph{Worked example with invented, labelled numbers.}
+\trapbox{\ph{The arithmetic or definition mistake interviewers listen for.}}
+
+\section{The rituals of the role}
+\begin{itemize}
+  \item \textbf{\ph{Weekly ritual}}: \ph{what it is, what you bring, what decision it feeds.}
+  \item \textbf{\ph{Monthly ritual}}: \ph{same shape.}
+\end{itemize}
+
+\section{One worked story with numbers}
+\scenario{\ph{The interviewer's question that this story answers.}}
+\ph{Situation in one line. The two options with invented numbers. The decision and why. What you would watch afterwards.}
+
+\section{The daily heartbeat}
+\begin{itemize}
+  \item \K \ph{Daily task 1 mapped to employer vocabulary.}
+  \item \LRN \ph{Daily task that is new; one line on how it is done.}
+\end{itemize}
+
+\section{\ph{COMPANY} vocabulary: recognise, don't claim \LRN}
+\begin{itemize}
+  \item \textbf{\ph{Term}}: \ph{plain meaning}. Say ``I have used the equivalent, \ph{candidate's term}''.
+\end{itemize}
+
+\section{Interview FAQs, reasoning shown}
+\Q{\ph{Likely question 1}}
+\A \ph{Answer in three sentences, with the reasoning visible so the follow-up can be handled.}
+\Q{\ph{Likely question 2}}
+\A \ph{Answer.}
+\trapbox{\ph{The follow-up that catches a memorised answer.}}
+
+\section{Drills: cold, out loud, before you leave home}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+  \item \ph{One drill per TRAP above, with the expected answer in brackets.}
+\end{enumerate}
+
+\section{Questions to ask them}
+\begin{itemize}
+  \item \ph{A question that shows you understood the job's hardest part.}
+\end{itemize}
+
+\section{Read next}
+\begin{itemize}
+  \item \href{https://example.com}{\ph{Resource 1}}: \ph{what to take from it, 20 minutes.}
+\end{itemize}
+\end{document}

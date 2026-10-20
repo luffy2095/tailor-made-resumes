@@ -1,0 +1,12 @@
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.png
+!templates/previews/*.png
+__pycache__/
+.setup-ok
+workspace.txt
+.DS_Store

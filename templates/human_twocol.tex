@@ -1,0 +1,59 @@
+% Human resume, two-column sidebar: Open Sans, accent sidebar headings, warm grey sidebar. Default for hospitality and client-facing tracks.
+% Target: exactly 1 page. Photo: \phototrue and put photo.jpg (square) next to this file. \setaccent{...} for the accent.
+\documentclass[10pt,a4paper]{article}
+\usepackage[default]{opensans}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[margin=0pt]{geometry}
+\usepackage{paracol}\usepackage{tikz}\usepackage{eso-pic}\usepackage{fontawesome5}\usepackage{ragged2e}\usepackage{graphicx}
+\usepackage{tailor}\setaccent{navy}
+\newif\ifphoto\photofalse
+\definecolor{sidebg}{HTML}{EDEAE4}\definecolor{mainbg}{HTML}{F8F8F8}
+\pagestyle{empty}\setlength{\parindent}{0pt}
+\columnratio{0.345}\setlength{\columnsep}{0pt}
+\newlength{\sidew}\setlength{\sidew}{0.345\paperwidth}
+\newlength{\lpad}\setlength{\lpad}{6mm}\newlength{\rpad}\setlength{\rpad}{9mm}
+\AddToShipoutPictureBG{\AtPageLowerLeft{\begin{tikzpicture}[overlay]
+  \fill[mainbg] (0,0) rectangle (\paperwidth,\paperheight);
+  \fill[sidebg] (0,0) rectangle (\sidew,\paperheight);\end{tikzpicture}}}
+\newcommand{\sidehead}[1]{\par\vspace{10pt}{\color{accent}\bfseries\large #1}\par\vspace{3pt}}
+\newcommand{\mainhead}[1]{\par\vspace{12pt}{\color{accent}\bfseries\LARGE #1}\par\vspace{-4pt}{\color{accent}\rule{\linewidth}{1.2pt}}\par\vspace{5pt}}
+\newlist{sidelist}{itemize}{1}
+\setlist[sidelist]{leftmargin=1.1em,label=\textcolor{accent}{\footnotesize$\bullet$},itemsep=2pt,topsep=2pt,parsep=0pt,before=\color{greytext}}
+\newcommand{\job}[3]{\par\vspace{6pt}{\color{accent}\bfseries #1 $\vert$ #2}\par\vspace{1pt}{\color{greytext}\itshape\small #3}\par\vspace{2pt}}
+\newlist{joblist}{itemize}{1}
+\setlist[joblist]{leftmargin=1.1em,label=\textcolor{accent}{\footnotesize$\bullet$},itemsep=2pt,topsep=1pt,parsep=0pt,before=\color{greytext}\small}
+\begin{document}\setlength{\parskip}{0pt}
+\begin{paracol}{2}
+% ======================= SIDEBAR =======================
+\hspace{\lpad}\begin{minipage}{\dimexpr\sidew-2\lpad\relax}
+\vspace{7mm}
+\ifphoto\begin{center}\begin{tikzpicture}
+  \clip (0,0) circle (20mm);\node at (0,0) {\includegraphics[width=40mm]{photo.jpg}};\end{tikzpicture}\end{center}\vspace{4mm}\fi
+{\color{accent}\bfseries\Huge \ph{Full}}\par{\color{accent}\bfseries\Huge \ph{Name}}\par\vspace{2pt}
+{\color{greytext}\large \ph{Role family}}\par
+\sidehead{Contact}
+{\color{greytext}\faPhone\ \ph{phone}\par\faEnvelope\ \href{mailto:PH-email}{\ph{email}}\par\faMapMarker\ \ph{City}\par\faLinkedin\ \href{https://PH-linkedin}{\ph{linkedin}}}\par
+\sidehead{Skills}
+\begin{sidelist}\item \ph{Skill}\item \ph{Skill}\item \ph{Skill}\end{sidelist}
+\sidehead{Systems}
+\begin{sidelist}\item \ph{Tool}\item \ph{Tool}\end{sidelist}
+\sidehead{Education}
+{\color{greytext}\textbf{\ph{Degree}}\par \ph{Institution}, \ph{YYYY}}\par
+\sidehead{Professional\\ Development}
+\begin{sidelist}\item \ph{Skill}\item \ph{Skill}\end{sidelist}
+\end{minipage}
+\switchcolumn
+% ======================= MAIN =======================
+\hspace{\rpad}\begin{minipage}{\dimexpr\textwidth-\sidew-2\rpad\relax}
+\vspace{9mm}
+\mainhead{Profile}
+{\color{greytext}\ph{Four lines for a human reader: who you are, what you are known for, what you want next.}}\par
+\mainhead{Experience}
+\job{\ph{Title}}{\ph{Mon YYYY} -- Present}{\ph{Company}, \ph{City}}
+\begin{joblist}\item \ph{Outcome first, then how.}\item \ph{Bullet.}\item \ph{Bullet.}\end{joblist}
+\job{\ph{Title}}{\ph{Mon YYYY} -- \ph{Mon YYYY}}{\ph{Company}, \ph{City}}
+\begin{joblist}\item \ph{Bullet.}\item \ph{Bullet.}\end{joblist}
+\mainhead{Achievements}
+\begin{joblist}\item \ph{Only things actually held or won.}\end{joblist}
+\end{minipage}
+\end{paracol}
+\end{document}

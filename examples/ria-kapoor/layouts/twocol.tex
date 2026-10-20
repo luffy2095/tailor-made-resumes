@@ -1,0 +1,64 @@
+% Human resume, two-column sidebar: Open Sans, accent sidebar headings, warm grey sidebar. Default for hospitality and client-facing tracks.
+% Target: exactly 1 page. Photo: \phototrue and put photo.jpg (square) next to this file. \setaccent{...} for the accent.
+\documentclass[10pt,a4paper]{article}
+\usepackage[default]{opensans}\renewcommand{\familydefault}{\sfdefault}
+\usepackage[margin=0pt]{geometry}
+\usepackage{paracol}\usepackage{tikz}\usepackage{eso-pic}\usepackage{fontawesome5}\usepackage{ragged2e}\usepackage{graphicx}
+\usepackage{tailor}\setaccent{navy}
+\newif\ifphoto\photofalse
+\definecolor{sidebg}{HTML}{EDEAE4}\definecolor{mainbg}{HTML}{F8F8F8}
+\pagestyle{empty}\setlength{\parindent}{0pt}
+\columnratio{0.345}\setlength{\columnsep}{0pt}
+\newlength{\sidew}\setlength{\sidew}{0.345\paperwidth}
+\newlength{\lpad}\setlength{\lpad}{6mm}\newlength{\rpad}\setlength{\rpad}{9mm}
+\AddToShipoutPictureBG{\AtPageLowerLeft{\begin{tikzpicture}[overlay]
+  \fill[mainbg] (0,0) rectangle (\paperwidth,\paperheight);
+  \fill[sidebg] (0,0) rectangle (\sidew,\paperheight);\end{tikzpicture}}}
+\newcommand{\sidehead}[1]{\par\vspace{10pt}{\color{accent}\bfseries\large #1}\par\vspace{3pt}}
+\newcommand{\mainhead}[1]{\par\vspace{12pt}{\color{accent}\bfseries\LARGE #1}\par\vspace{-4pt}{\color{accent}\rule{\linewidth}{1.2pt}}\par\vspace{5pt}}
+\newlist{sidelist}{itemize}{1}
+\setlist[sidelist]{leftmargin=1.1em,label=\textcolor{accent}{\footnotesize$\bullet$},itemsep=2pt,topsep=2pt,parsep=0pt,before=\color{greytext}}
+\newcommand{\job}[3]{\par\vspace{6pt}{\color{accent}\bfseries #1 $\vert$ #2}\par\vspace{1pt}{\color{greytext}\itshape\small #3}\par\vspace{2pt}}
+\newlist{joblist}{itemize}{1}
+\setlist[joblist]{leftmargin=1.1em,label=\textcolor{accent}{\footnotesize$\bullet$},itemsep=2pt,topsep=1pt,parsep=0pt,before=\color{greytext}\small}
+\begin{document}\setlength{\parskip}{0pt}
+\begin{paracol}{2}
+\hspace{\lpad}\begin{minipage}{\dimexpr\sidew-2\lpad\relax}
+\vspace{7mm}
+{\color{accent}\bfseries\Huge Ria}\par{\color{accent}\bfseries\Huge Kapoor}\par\vspace{2pt}
+{\color{greytext}\large Backend Engineer}\par
+\sidehead{Contact}
+{\color{greytext}\small\faPhone\ +91 90000 00000\par\faEnvelope\ \href{mailto:ria.kapoor@example.com}{ria.kapoor@example.com}\par\faMapMarker\ Bengaluru\par\faGlobe\ \href{https://example.com/ria}{example.com/ria}}\par
+\sidehead{Skills}
+\begin{sidelist}\item Distributed systems\item Idempotent APIs\item Reconciliation\item Incident response\end{sidelist}
+\sidehead{Systems}
+\begin{sidelist}\item Python, SQL\item PostgreSQL, Redis\item Kafka\item AWS (ECS, RDS, SQS)\item Grafana, PagerDuty\end{sidelist}
+\sidehead{Education}
+{\color{greytext}\textbf{B.Tech, Computer Science}\par Example Institute of Technology, 2021}\par
+\sidehead{Professional\\ Development}
+\begin{sidelist}\item Go\item Payment systems\item Double-entry ledgers\end{sidelist}
+\end{minipage}
+\switchcolumn
+\hspace{\rpad}\begin{minipage}{\dimexpr\textwidth-\sidew-2\rpad\relax}
+\vspace{9mm}
+\mainhead{Profile}
+{\color{greytext}Backend engineer with five years on high-volume order systems. I make retries safe, keep money and records reconciled, and lead calmly when production breaks.}\par
+\mainhead{Experience}
+\job{Backend Engineer II}{Jul 2023 -- Present}{Tiffinly, Bengaluru}
+\begin{joblist}
+\item Own the order-dispatch service that assigns riders to orders in 14 cities.
+\item Ended duplicate rider assignments during timeouts with idempotency keys under a unique constraint.
+\item Built the nightly reconciliation of rider payouts against the payouts ledger.
+\item Led the Diwali-eve backlog incident; wrote the postmortem and the backpressure fix.
+\item Cut p99 latency of the assignment API from 900 ms to 240 ms with a Redis geo index.
+\end{joblist}
+\job{Backend Engineer I}{Jul 2021 -- Jun 2023}{Tiffinly, Bengaluru}
+\begin{joblist}
+\item Built the refund flow for cancelled orders, including partial refunds.
+\item On-call from month six; wrote four of the team's runbooks.
+\end{joblist}
+\mainhead{Achievements}
+\begin{joblist}\item Postmortem for the Diwali-eve backlog adopted as the team's incident template.\end{joblist}
+\end{minipage}
+\end{paracol}
+\end{document}
