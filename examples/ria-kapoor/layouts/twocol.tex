@@ -25,6 +25,8 @@
 \begin{paracol}{2}
 \hspace{\lpad}\begin{minipage}{\dimexpr\sidew-2\lpad\relax}
 \vspace{7mm}
+\ifphoto\begin{center}\begin{tikzpicture}
+  \clip (0,0) circle (20mm);\node at (0,0) {\includegraphics[width=40mm]{photo}};\end{tikzpicture}\end{center}\vspace{4mm}\fi
 {\color{accent}\bfseries\Huge Ria}\par{\color{accent}\bfseries\Huge Kapoor}\par\vspace{2pt}
 {\color{greytext}\large Backend Engineer}\par
 \sidehead{Contact}

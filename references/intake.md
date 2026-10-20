@@ -29,6 +29,12 @@ Use the question tool, at most four questions per call, each with fixed options.
 
 After question 8, two quick toggles: accent colour (navy, forest, wine, slate) and photo (on or off; default off, except the two-column layout in tracks where photos are customary).
 
+**When the photo is on, ask for the image straight away:**
+
+> Send a photo for the resume: square or portrait, face centred, plain light background, at least 600 px. JPG, PNG, AVIF, WebP or HEIC all work. A recent professional headshot works best; a cropped phone photo against a wall is fine.
+
+Save it as `profile/photo.<its extension>`. The build converts AVIF, WebP and HEIC to JPG itself. Look at it before using it. If it is wider than tall, the face is not centred, or it is a group or casual photo, say so in one line and ask for another. Never crop out other people or edit the person's appearance. If the user has no photo ready, turn the photo off for now and note it in the dossier preferences.
+
 ## Step 3: one open question, last
 
 > Anything else I should know? Career gaps, visa, a role you want left off, a story you want told. Leave it empty if not.

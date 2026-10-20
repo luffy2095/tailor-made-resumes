@@ -29,6 +29,48 @@ def stamp_root_profile(d):
     return None
 
 
+PHOTO_READY = ("jpg", "jpeg", "png")
+PHOTO_CONVERT = ("avif", "webp", "heic", "heif")
+
+
+def ensure_photo(dirs):
+    """True when a photo pdflatex can read exists. AVIF, WebP and HEIC are converted to photo.jpg first."""
+    for d in dirs:
+        if any(os.path.exists(os.path.join(d, f"photo.{e}")) for e in PHOTO_READY):
+            return True
+    for d in dirs:
+        for e in PHOTO_CONVERT:
+            src = os.path.join(d, f"photo.{e}")
+            if os.path.exists(src):
+                dst = os.path.join(d, "photo.jpg")
+                print(f"  converting photo.{e} to photo.jpg (pdflatex reads only JPG, PNG and PDF)", flush=True)
+                return convert_image(src, dst)
+    return False
+
+
+def convert_image(src, dst):
+    try:  # Pillow 11.3+ reads AVIF and WebP; HEIC needs pillow-heif
+        from PIL import Image
+        try:
+            import pillow_heif
+            pillow_heif.register_heif_opener()
+        except ImportError:
+            pass
+        Image.open(src).convert("RGB").save(dst, "JPEG", quality=92)
+        return True
+    except Exception as err:
+        print(f"  Pillow could not convert it ({err.__class__.__name__}); trying system tools")
+    tools = [["sips", "-s", "format", "jpeg", src, "--out", dst],      # macOS
+             ["magick", src, dst],                                         # ImageMagick 7
+             ["convert", src, dst],                                        # ImageMagick 6
+             ["ffmpeg", "-y", "-loglevel", "error", "-i", src, dst]]
+    for cmd in tools:
+        if shutil.which(cmd[0]) and subprocess.run(cmd, capture_output=True).returncode == 0 and os.path.exists(dst):
+            return True
+    print("  no converter found. Install Pillow (pip install pillow) or ask the user for a JPG or PNG.")
+    return False
+
+
 def compile_tex(path):
     d, name = os.path.split(os.path.abspath(path))
     # tailor.sty lives in templates/; a trailing separator keeps the default TeX search path
@@ -101,6 +143,13 @@ def main():
     left = len(re.findall(r"\\ph\{|PH-", src))
     if left and not a.allow_placeholders:
         sys.exit(f"{a.tex} still has {left} unfilled placeholder(s) (\\ph{{...}} or PH-...). Fill them first.")
+    if re.search(r"^[^%\n]*\\phototrue", src, re.M):
+        here = os.path.dirname(os.path.abspath(a.tex))
+        places = [here] + ([stamp_root_profile(here)] if stamp_root_profile(here) else [])
+        if not ensure_photo(places):
+            sys.exit("Photo is on but there is no usable profile/photo (JPG, PNG, AVIF, WebP or HEIC). Ask the user for a photo "
+                     "(square or portrait, face centred, plain background, at least 600 px), save it as "
+                     "profile/photo.jpg, then rebuild. Or turn the photo off.")
     print(f"compiling {a.tex}", flush=True)
     result, errs = compile_tex(a.tex)
     if errs:

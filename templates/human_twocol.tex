@@ -1,5 +1,5 @@
 % Human resume, two-column sidebar: Open Sans, accent sidebar headings, warm grey sidebar. Default for hospitality and client-facing tracks.
-% Target: exactly 1 page. Photo: \phototrue and put photo.jpg (square) next to this file. \setaccent{...} for the accent.
+% Target: exactly 1 page. Photo: add \phototrue after \photofalse below; the image is profile/photo.jpg or .png (square or portrait). \setaccent{...} for the accent.
 \documentclass[10pt,a4paper]{article}
 \usepackage[default]{opensans}\renewcommand{\familydefault}{\sfdefault}
 \usepackage[margin=0pt]{geometry}
@@ -27,7 +27,7 @@
 \hspace{\lpad}\begin{minipage}{\dimexpr\sidew-2\lpad\relax}
 \vspace{7mm}
 \ifphoto\begin{center}\begin{tikzpicture}
-  \clip (0,0) circle (20mm);\node at (0,0) {\includegraphics[width=40mm]{photo.jpg}};\end{tikzpicture}\end{center}\vspace{4mm}\fi
+  \clip (0,0) circle (20mm);\node at (0,0) {\includegraphics[width=40mm]{photo}};\end{tikzpicture}\end{center}\vspace{4mm}\fi
 {\color{accent}\bfseries\Huge \ph{Full}}\par{\color{accent}\bfseries\Huge \ph{Name}}\par\vspace{2pt}
 {\color{greytext}\large \ph{Role family}}\par
 \sidehead{Contact}

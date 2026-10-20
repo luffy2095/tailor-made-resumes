@@ -64,7 +64,7 @@ Ask five to eight follow-ups about gaps only. Then write `profile/dossier.md` in
 1. **JD.** Fetch the posting. LinkedIn may block fetching; if so, ask the user to paste the text. Save `jobs/<company-role>/jd.md`: source URL, fetch date, must-haves and nice-to-haves in the JD's own words, keywords to mirror.
 2. **Gap map.** Match the JD against the dossier and the track file (`references/tracks/<track>.md`). Write `gapmap.md` with three lists: KNOW (with the dossier fact each maps to), LEARN, missing. Show the three lists and let the user move items. This decides everything after it.
 3. **Cheat sheet first.** Follow `references/cheatsheet-style.md`. Copy `templates/cheatsheet_job.tex` to `cheatsheet.tex` and fill it. For each LEARN item, reuse a sheet from `topics/` or write a new topic sheet from `templates/cheatsheet_topic.tex`. Check every link returns 200.
-4. **Resumes.** Copy the layout from the dossier's preferences (`references/layouts.md`) to `human.tex`, and `templates/ats.tex` to `ats.tex`. KNOW items become bullets in the employer's words. LEARN items go to Professional Development. Follow `references/ats-rules.md` for the ATS file. Same facts in both.
+4. **Resumes.** If the preferences say photo on and `profile/photo.jpg` is missing, ask for the photo now (wording in `references/intake.md`). Copy the layout from the dossier's preferences (`references/layouts.md`) to `human.tex`, and `templates/ats.tex` to `ats.tex`. KNOW items become bullets in the employer's words. LEARN items go to Professional Development. Follow `references/ats-rules.md` for the ATS file. Same facts in both.
 5. **Build and check.**
    ```bash
    python3 <skill>/scripts/build.py jobs/<slug>/cheatsheet.tex --pages 2 --png
