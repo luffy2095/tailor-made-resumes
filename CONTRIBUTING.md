@@ -5,7 +5,7 @@ Thank you for helping. This guide says what helps most, how to set up, and what 
 ## What helps most
 
 1. **A new track.** Marketing, finance, sales, product, data science, nursing, teaching: any field with its own vocabulary and interview style.
-2. **A test report on Linux or Windows.** Setup is written from the TinyTeX documentation but has run only on macOS. A report helps even when everything works.
+2. **A report from a real machine.** CI tests clean macOS, Linux and Windows machines on every push. A machine with an older TeX install, MiKTeX, or an unusual setup can still fail, and a report helps.
 3. **Better cheat sheets.** A sharper rule in `references/cheatsheet-style.md`, or a second fictional example in another field.
 4. **A new human resume layout.** Only when it serves a field the current three do not.
 5. **Fixes to the docs.**

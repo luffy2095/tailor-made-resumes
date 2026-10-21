@@ -1,5 +1,7 @@
 # Tailor-made resumes
 
+[![test](https://github.com/luffy2095/tailor-made-resumes/actions/workflows/test.yml/badge.svg)](https://github.com/luffy2095/tailor-made-resumes/actions/workflows/test.yml)
+
 A Claude Code skill that works like a paid personal resume tailor. You give it your resume and a job link. It gives you an interview cheat sheet and two resumes for that job, all built from facts you approved.
 
 It is for anyone applying to jobs who wants each application tailored, without inventing anything and without learning LaTeX.
@@ -97,13 +99,15 @@ Without a matching track, the skill still works. It uses general rules and asks 
 
 | OS | Status | Notes |
 |---|---|---|
-| macOS | tested | nothing extra |
-| Linux | supported, untested | needs full `perl` (not perl-base) and `xz`. Setup names what is missing. |
-| Windows | supported, untested | nothing extra. Setup runs TinyTeX's PowerShell installer itself. |
+| macOS | tested on every push | nothing extra |
+| Linux | tested on every push | needs full `perl` (not perl-base) and `xz`. Setup names what is missing. |
+| Windows | tested on every push | nothing extra. Setup runs TinyTeX's PowerShell installer itself. |
+
+Every push runs setup and the full self-test on clean macOS, Linux and Windows machines.
 
 Optional: `pdftoppm` and `pdftotext` from poppler give PNG previews and the ATS text check (`brew install poppler` or `apt install poppler-utils`).
 
-If you run it on Linux or Windows, please [report how it went](https://github.com/luffy2095/tailor-made-resumes/issues/new?template=bug_report.yml), even when it works.
+If setup fails on your machine, please [report it](https://github.com/luffy2095/tailor-made-resumes/issues/new?template=bug_report.yml). Real machines with an older TeX install can behave differently from a clean one.
 
 ## Suggest a feature or report a bug
 
