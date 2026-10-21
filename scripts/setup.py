@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """One-time setup: install TinyTeX if missing, add the packages the templates use, compile a smoke page.
 
-    python3 -u setup.py > setup.log 2>&1      # 2-6 min on a fresh machine, mostly download
+    python3 -u setup.py > setup.log 2>&1      # under a minute on a fast connection, mostly download
 
 Prints a line before each phase so a slow download is never silent. Exit 0 = LaTeX ready.
 """
@@ -58,7 +58,7 @@ def sh(cmd):
 def install_tinytex():
     system = platform.system()
     if system == "Windows":
-        print("  installing TinyTeX into %APPDATA% with the official PowerShell installer (about 200 MB, no admin)", flush=True)
+        print("  installing TinyTeX into %APPDATA% with the official PowerShell installer (about 420 MB, no admin)", flush=True)
         ps1 = os.path.join(tempfile.gettempdir(), "install-tinytex.ps1")
         urllib.request.urlretrieve(INSTALL_WIN, ps1)
         r = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1])
@@ -73,7 +73,7 @@ def install_tinytex():
         fetch = "wget -qO-" if shutil.which("wget") else "curl -sL"
     else:
         fetch = "curl -sL"
-    print("  installing TinyTeX into your user folder (about 200 MB, no sudo)", flush=True)
+    print("  installing TinyTeX into your user folder (about 300-360 MB, no sudo)", flush=True)
     if sh(f'{fetch} "{INSTALL_UNIX}" | sh'):
         print("  TinyTeX install failed. See the output above."); sys.exit(1)
 

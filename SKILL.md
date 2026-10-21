@@ -36,7 +36,7 @@ every later run.
 ## 0. Setup (first run only, before intake)
 
 If `<skill>/.setup-ok` exists, skip this. Otherwise tell the user in one line: "I need a one-time LaTeX install,
-about 200 MB, into your user folder. Starting now." Then:
+300 to 420 MB, into your user folder. Starting now." Then:
 
 ```bash
 python3 -u <skill>/scripts/setup.py > <scratchpad>/setup.log 2>&1

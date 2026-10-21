@@ -17,7 +17,7 @@ For anything bigger than a typo, open an issue first so we agree on the approach
 ```bash
 git clone https://github.com/<you>/tailor-made-resumes
 cd tailor-made-resumes
-python3 -u scripts/setup.py          # installs TinyTeX if missing, about 2 to 6 minutes the first time
+python3 -u scripts/setup.py          # installs TinyTeX if missing (300 to 420 MB), under a minute on a fast connection
 python3 -u scripts/selftest.py       # builds every example and checks every guard, about 1 minute
 ```
 

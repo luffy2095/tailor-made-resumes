@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           for d in "$HOME/.TinyTeX" "$HOME/Library/TinyTeX" "$APPDATA/TinyTeX"; do
-            [ -d "$d" ] && du -sh "$d"
+            if [ -d "$d" ]; then du -sh "$d"; fi
           done
 
       - name: Self-test (every example, every template, the ATS ligature guard)

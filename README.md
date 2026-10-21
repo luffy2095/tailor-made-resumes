@@ -34,7 +34,7 @@ git -C ~/.claude/skills/tailor-made-resumes pull
 
 Open Claude Code and say: `tailor my resume for this job: <link>`.
 
-1. **Setup.** The skill installs TinyTeX, a small LaTeX distribution, into your user folder. It needs about 200 MB and no admin rights. This happens once.
+1. **Setup.** The skill installs TinyTeX, a small LaTeX distribution, into your user folder. It needs 300 to 420 MB depending on the OS, and no admin rights. On a fast connection it takes under a minute. This happens once.
 2. **Your material.** It asks for your current resume as PDF or DOCX, or your LinkedIn profile saved as PDF. Portfolio and GitHub links help.
 3. **Standard questions.** A few questions with ready options: your field, seniority, location, whether employer numbers are confidential, and your resume style. One open question comes last.
 4. **Your fact file.** It asks a few follow-ups, then shows you a fact file with every role, tool and achievement. You correct it and approve it. Nothing is built before that.
