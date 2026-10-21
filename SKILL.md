@@ -45,7 +45,7 @@ python3 -u <skill>/scripts/setup.py > <scratchpad>/setup.log 2>&1
 Run it in the foreground with a 10 minute timeout, then read the log.
 - Exit 0: write `<skill>/.setup-ok` and say "LaTeX ready, test page compiled."
 - Exit 2 on Linux: the log names missing `perl` or `xz`. Give the user the install command and stop.
-- Exit 2 on Windows: the log prints the installer command. Give it to the user, wait, then rerun setup.
+- Windows needs nothing from the user: setup runs TinyTeX's PowerShell installer itself.
 - Exit 1: show the log's error lines and stop.
 
 ## 1. Intake (first run only)

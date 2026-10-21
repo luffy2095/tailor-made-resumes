@@ -99,7 +99,7 @@ Without a matching track, the skill still works. It uses general rules and asks 
 |---|---|---|
 | macOS | tested | nothing extra |
 | Linux | supported, untested | needs full `perl` (not perl-base) and `xz`. Setup names what is missing. |
-| Windows | supported, untested | setup prints the TinyTeX install command for PowerShell. `choco install tinytex` also works. |
+| Windows | supported, untested | nothing extra. Setup runs TinyTeX's PowerShell installer itself. |
 
 Optional: `pdftoppm` and `pdftotext` from poppler give PNG previews and the ATS text check (`brew install poppler` or `apt install poppler-utils`).
 

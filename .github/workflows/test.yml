@@ -16,8 +16,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -30,16 +30,15 @@ jobs:
             Windows) choco install poppler -y --no-progress ;;
           esac
 
-      # Windows users run the TinyTeX installer themselves (README); CI does the same.
-      - name: Install TinyTeX the way the README tells Windows users
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Invoke-WebRequest https://tinytex.yihui.org/install-bin-windows.bat -OutFile install-tinytex.bat
-          .\install-tinytex.bat
-
-      - name: Setup (installs TinyTeX on macOS and Linux, adds packages, compiles a test page)
+      - name: Setup (installs TinyTeX, adds packages, compiles a test page)
         run: python -u scripts/setup.py
+
+      - name: Report the TinyTeX install size
+        shell: bash
+        run: |
+          for d in "$HOME/.TinyTeX" "$HOME/Library/TinyTeX" "$APPDATA/TinyTeX"; do
+            [ -d "$d" ] && du -sh "$d"
+          done
 
       - name: Self-test (every example, every template, the ATS ligature guard)
         run: python -u scripts/selftest.py

@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tex  # noqa: E402
@@ -21,9 +22,13 @@ if hasattr(sys.stdout, "reconfigure"):   # Windows pipes default to cp1252; liga
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 PACKAGES = ["carlito", "opensans", "xcharter", "enumitem", "titlesec", "xcolor", "hyperref", "geometry",
-            "pgf", "paracol", "ragged2e", "fontawesome5", "eso-pic", "xstring", "carlisle", "microtype", "latexmk"]
+            "pgf", "paracol", "ragged2e", "fontawesome5", "eso-pic", "xstring", "carlisle", "microtype", "latexmk",
+            # fallback and typewriter fonts: a fresh TinyTeX lacks them, and \texttt or a TS1 symbol needs them
+            "fontaxes", "ec", "cm-super", "lm"]
 INSTALL_UNIX = "https://tinytex.yihui.org/install-bin-unix.sh"
-INSTALL_WIN = "https://tinytex.yihui.org/install-bin-windows.bat"
+# The official .bat wrapper passes its URL to curl in single quotes, which cmd keeps literally (broken as of 2026-10).
+# Run the PowerShell installer it wraps instead.
+INSTALL_WIN = "https://tinytex.yihui.org/install-bin-windows.ps1"
 T0 = time.time()
 
 SMOKE = r"""
@@ -53,10 +58,13 @@ def sh(cmd):
 def install_tinytex():
     system = platform.system()
     if system == "Windows":
-        print("  Windows: run this once in PowerShell, then rerun setup.py:")
-        print(f"    Invoke-WebRequest {INSTALL_WIN} -OutFile install-tinytex.bat; .\\install-tinytex.bat")
-        print("  or: choco install tinytex   /   scoop bucket add r-bucket https://github.com/cderv/r-bucket.git; scoop install tinytex")
-        sys.exit(2)
+        print("  installing TinyTeX into %APPDATA% with the official PowerShell installer (about 200 MB, no admin)", flush=True)
+        ps1 = os.path.join(tempfile.gettempdir(), "install-tinytex.ps1")
+        urllib.request.urlretrieve(INSTALL_WIN, ps1)
+        r = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1])
+        if r.returncode:
+            print("  TinyTeX install failed. See the output above. Fallback: choco install tinytex"); sys.exit(1)
+        return
     if system == "Linux":
         missing = [t for t in ("perl", "xz") if not shutil.which(t)]
         if missing:
