@@ -19,6 +19,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BUILD = [sys.executable, os.path.join(ROOT, "scripts", "build.py")]
 EXPECTED_PAGES = {"cheatsheet": 2, "cheatsheet_ledgers": 2}   # every other example is a 1-page resume
 failures = []
+if hasattr(sys.stdout, "reconfigure"):   # Windows pipes default to cp1252; ligature words would crash print
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
 def check(name, ok, detail=""):
@@ -28,7 +30,7 @@ def check(name, ok, detail=""):
 
 
 def build(path, *extra):
-    return subprocess.run([*BUILD, path, *extra], capture_output=True, text=True)
+    return subprocess.run([*BUILD, path, *extra], capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def main():
@@ -53,8 +55,8 @@ def main():
 
         print("## 3. ATS guard catches ligatures", flush=True)
         ats = os.path.join(tmp, "examples", "ria-kapoor", "jobs", "ledgerline-senior-backend-payments", "ats.tex")
-        src = open(ats).read()   # read before opening for write: "w" truncates the file
-        open(ats, "w").write(re.sub(r".*DisableLigatures.*\n", "", src))
+        src = open(ats, encoding="utf-8").read()   # read before opening for write: "w" truncates the file
+        open(ats, "w", encoding="utf-8").write(re.sub(r".*DisableLigatures.*\n", "", src))
         r = build(ats, "--pages", "1")
         if shutil.which("pdftotext"):
             check("ligatures re-enabled -> build fails", r.returncode == 4, r.stdout[-200:])
@@ -65,7 +67,7 @@ def main():
         print("## 4. Every link resolves", flush=True)
         urls = set()
         for f in glob.glob(os.path.join(ROOT, "**", "*.tex"), recursive=True):
-            urls |= {u for u in re.findall(r"\\href\{(https?://[^}]+)\}", open(f).read()) if "PH-" not in u and "example.com" not in u}
+            urls |= {u for u in re.findall(r"\\href\{(https?://[^}]+)\}", open(f, encoding="utf-8").read()) if "PH-" not in u and "example.com" not in u}
         for u in sorted(urls):
             try:
                 code = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=20).status

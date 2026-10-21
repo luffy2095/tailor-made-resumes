@@ -1,0 +1,45 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  selftest:
+    name: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install poppler (PNG previews and the ATS text check)
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux)   sudo apt-get update -q && sudo apt-get install -y -q poppler-utils ;;
+            macOS)   brew install poppler ;;
+            Windows) choco install poppler -y --no-progress ;;
+          esac
+
+      # Windows users run the TinyTeX installer themselves (README); CI does the same.
+      - name: Install TinyTeX the way the README tells Windows users
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://tinytex.yihui.org/install-bin-windows.bat -OutFile install-tinytex.bat
+          .\install-tinytex.bat
+
+      - name: Setup (installs TinyTeX on macOS and Linux, adds packages, compiles a test page)
+        run: python -u scripts/setup.py
+
+      - name: Self-test (every example, every template, the ATS ligature guard)
+        run: python -u scripts/selftest.py

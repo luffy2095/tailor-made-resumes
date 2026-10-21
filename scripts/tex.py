@@ -29,5 +29,7 @@ def tex_bin_dir():
 def run(tool, *args, cwd=None, check=False):
     """Run a TeX tool by name. Returns CompletedProcess with text output."""
     d = tex_bin_dir()
-    exe = os.path.join(d, tool) if d else tool
-    return subprocess.run([exe, *args], cwd=cwd, capture_output=True, text=True, check=check)
+    # which() applies PATHEXT, so tlmgr resolves to tlmgr.bat on Windows
+    exe = (shutil.which(tool, path=d) if d else None) or shutil.which(tool) or tool
+    return subprocess.run([exe, *args], cwd=cwd, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace", check=check)

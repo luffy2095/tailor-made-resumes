@@ -17,6 +17,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tex  # noqa: E402
 
+if hasattr(sys.stdout, "reconfigure"):   # Windows pipes default to cp1252; ligature words would crash print
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 
 TEMPLATES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "templates")
 
@@ -95,7 +98,8 @@ def ats_text_check(pdf):
     if not shutil.which("pdftotext"):
         print("  (no pdftotext; skipping the ATS text check)")
         return True
-    text = subprocess.run(["pdftotext", pdf, "-"], capture_output=True, text=True).stdout
+    text = subprocess.run(["pdftotext", "-enc", "UTF-8", pdf, "-"], capture_output=True, text=True,
+                          encoding="utf-8", errors="replace").stdout
     bad = sorted({w for w in text.split() if any(c in w for c in LIGATURES)})
     if bad:
         print(f"  ATS TEXT BROKEN: {len(bad)} word(s) carry ligature characters: {', '.join(bad[:8])}")
@@ -115,7 +119,7 @@ def stamp(tex_path):
             import datetime
             import hashlib
             digest = hashlib.sha256(open(dossier, "rb").read()).hexdigest()[:12]
-            with open(os.path.join(d, "built-from.txt"), "w") as f:
+            with open(os.path.join(d, "built-from.txt"), "w", encoding="utf-8") as f:
                 f.write(f"dossier sha256 {digest}, built {datetime.date.today()}\n")
             return os.path.join(root, "profile")
         root = os.path.dirname(root)

@@ -17,6 +17,9 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tex  # noqa: E402
 
+if hasattr(sys.stdout, "reconfigure"):   # Windows pipes default to cp1252; ligature words would crash print
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 PACKAGES = ["carlito", "opensans", "xcharter", "enumitem", "titlesec", "xcolor", "hyperref", "geometry",
             "pgf", "paracol", "ragged2e", "fontawesome5", "eso-pic", "xstring", "carlisle", "microtype", "latexmk"]
 INSTALL_UNIX = "https://tinytex.yihui.org/install-bin-unix.sh"
@@ -112,7 +115,7 @@ def main():
     phase("4. Smoke compile (all fonts and packages on one page)")
     with tempfile.TemporaryDirectory() as tmp:
         src = os.path.join(tmp, "smoke.tex")
-        open(src, "w").write(SMOKE)
+        open(src, "w", encoding="utf-8").write(SMOKE)
         for attempt in range(4):
             r = tex.run("pdflatex", "-interaction=nonstopmode", "-halt-on-error", "smoke.tex", cwd=tmp)
             if not r.returncode:
